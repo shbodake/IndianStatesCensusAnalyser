@@ -3,12 +3,13 @@ package com.blp.stateanalyser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
+import static com.blp.stateanalyser.CensusAnalyserException.ExceptionType.CENSUS_INCORRECT_FILE_FORMAT;
 import static org.junit.Assert.*;
 
 public class CensusAnalyserTest {
     private String INDIAN_CENSUS_CSV_FILE_PATH = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
     private String INIDAN_CENSUS_WrongCSV_FILE_PATH = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStateCensus1.csv";
+    private String INDIAN_CENSUS_INCORRECT_FILE_FORMAT  = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStateCensus1.txt";
 
     // Tc1.1
     @Test
@@ -30,6 +31,19 @@ public class CensusAnalyserTest {
             Assert.assertEquals(e.type, CensusAnalyserException.ExceptionType.CENSUS_FILE_INCORRECT);
             e.printStackTrace();
         }
+    }
 
+    // TC1.3
+    @Test
+    public void givenIndianCensusCSVFile_WhenCorrectPathButWrongFileFormat_ShouldThrowException() {
+
+        try {
+            CensusAnalyser censusAnalyser = new CensusAnalyser();
+            ExpectedException exceptionRule = ExpectedException.none();
+            exceptionRule.expect(CensusAnalyserException.class);
+            censusAnalyser.loadIndiaCensusData(INDIAN_CENSUS_INCORRECT_FILE_FORMAT);
+        } catch (CensusAnalyserException e) {
+            Assert.assertEquals(CENSUS_INCORRECT_FILE_FORMAT, e.type);
+        }
     }
 }
