@@ -3,6 +3,9 @@ package com.blp.stateanalyser;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import java.io.IOException;
+
 import static com.blp.stateanalyser.CensusAnalyserException.ExceptionType.CENSUS_INCORRECT_FILE_FORMAT;
 import static org.junit.Assert.*;
 
@@ -12,6 +15,8 @@ public class CensusAnalyserTest {
     private String INDIAN_CENSUS_INCORRECT_FILE_FORMAT  = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStateCensus1.txt";
     private String INDIAN_CENSUS_WITHWRONG_DELIMITER = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStateCensus.csv";
     private String INDIAN_CENSUS_WITH_WRONG_HEADER = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStatECensusDataWithWrongHeader.csv";
+
+    private String INDIAN_STATE_CODE_CSV_FILE = "H:\\IndianStatesCensusAnalyser\\src\\main\\resources\\IndianStateCode.csv";
 
 
     // Tc1.1
@@ -79,5 +84,13 @@ public class CensusAnalyserTest {
             Assert.assertEquals(CensusAnalyserException.ExceptionType.CENSUS_WRONG_HEADER, e.type);
             e.printStackTrace();
         }
+    }
+
+    // Tc2.1
+    @Test
+    public void givenIndianStateCodeCSVFile_WhenLoad_ShouldReturnCorrectRecords() throws IOException {
+        CensusAnalyser censusAnalyser = new CensusAnalyser();
+        int count = censusAnalyser.loadIndianStateCodeData(INDIAN_STATE_CODE_CSV_FILE);
+        Assert.assertEquals(37,count);
     }
 }
